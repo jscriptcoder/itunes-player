@@ -5,7 +5,7 @@ import Header from '../Header'
 import Footer from '../Footer'
 
 interface PageProps {
-  children: JSX.Element | string
+  children: Array<JSX.Element | string>
 }
 
 export default function Page(props: PageProps): JSX.Element {
@@ -21,7 +21,7 @@ export default function Page(props: PageProps): JSX.Element {
 
       <Header />
 
-      <main>
+      <main className={styles.main}>
         {children}
       </main>
 

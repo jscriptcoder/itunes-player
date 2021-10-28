@@ -1,1 +1,20 @@
-.container {}
+.container {
+  display: flex;
+  height: var(--header-height);
+  padding: 10px 0;
+  align-items: center;
+  color: var(--yellow-font);
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.logo {
+  margin-right: 8px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.title {
+  font-size: 22px;
+}
