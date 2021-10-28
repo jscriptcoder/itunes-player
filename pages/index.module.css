@@ -1,0 +1,16 @@
+.contentWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: var(--space-md);
+}
+
+.searchWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.searchWrapper > *:first-child {
+  margin-bottom: var(--space-md);
+}

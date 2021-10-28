@@ -4,6 +4,8 @@
   --yellow-font: rgb(240, 185, 11);
   --header-height: 64px;
   --footer-height: 48px;
+  --space-md: 16px;
+  --space-xs: 8px;
 }
 
 html,
@@ -22,4 +24,8 @@ body,
 
 * {
   box-sizing: border-box;
+}
+
+.pointer {
+  cursor: pointer;
 }
