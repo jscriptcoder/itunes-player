@@ -1,6 +1,6 @@
 import EventEmitter from 'events'
 
-import Song from './Song'
+import { Song } from './song'
 
 export default class Store extends EventEmitter {
   static __instance__: Store
@@ -11,17 +11,26 @@ export default class Store extends EventEmitter {
 
   songs: Song[] = []
   selectedSong: Maybe<Song>
+  selectedIndex: number = -1
 
   setSongs(songs: Song[]): void {
     this.songs = songs
-    this.emit('songs-change')
+    this.emit('songs-changed')
   }
 
-  setSelected(song: Song): void {
-    if(song) {
-      this.selectedSong = song
-      this.emit('selectedsong-change')
-    } 
+  selectSong(index: number): void {
+    if(index !== this.selectedIndex && this.songs[index]) {
+      this.selectedSong = this.songs[index]
+      this.selectedIndex = index
+      this.emit('song-selected', this.selectedSong, this.selectedIndex)
+    }
+  }
+
+  unselectSong(): void {
+    if (this.selectedIndex >= 0 && this.selectedSong)
+    this.selectedSong = undefined
+    this.selectedIndex = -1
+    this.emit('song-unselected')
   }
 }
 
