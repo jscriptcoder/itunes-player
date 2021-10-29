@@ -4,7 +4,10 @@ import { columns, expandedRowRender } from './resultsTableConfig'
 import useResultsTable from './useResultsTable'
 
 export default function ResultsTable(): JSX.Element {
-  const { songs } = useResultsTable()
+  const {
+    songs,
+    searching,
+  } = useResultsTable()
 
   return (
     <Table
@@ -13,6 +16,7 @@ export default function ResultsTable(): JSX.Element {
       dataSource={songs}
       expandable={{ expandedRowRender}}
       size="small"
+      loading={searching}
     />
   )
 }
