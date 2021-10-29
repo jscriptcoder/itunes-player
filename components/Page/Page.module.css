@@ -1,6 +1,10 @@
 .container {
     height: 100%;
-    padding-top: var(--header-height);
-    padding-bottom: var(--footer-height);
-    padding: var(--header-height) 16px var(--footer-height);
+}
+
+.main {
+    padding: 
+      calc(var(--header-height) + 10px)
+      16px
+      calc(var(--footer-height) + 10px);
 }
