@@ -9,7 +9,15 @@ import {
 
 import store from '../../models/Store'
 
-export default function useSearchBar() {
+interface SearchBarUI {
+  term: string
+  searching: boolean
+  searchChange: ChangeEventHandler<HTMLInputElement>
+  searchKeydown: KeyboardEventHandler<HTMLInputElement>
+  searchClick: MouseEventHandler<HTMLElement>
+}
+
+export default function useSearchBar(): SearchBarUI {
   const [term, setTerm] = useState('')
   const [searching, setSearching] = useState(false)
 
@@ -19,6 +27,11 @@ export default function useSearchBar() {
 
     store.on('searching', onSearching)
     store.on('donesearching', onDoneSearching)
+
+    return () => {
+      store.off('searching', onSearching)
+      store.off('donesearching', onDoneSearching)
+    }
   }, [])
 
   const searchChange: ChangeEventHandler<HTMLInputElement> = useCallback(event => {

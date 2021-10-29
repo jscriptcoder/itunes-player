@@ -1,0 +1,24 @@
+.flex-align-center {
+  display: flex;
+  align-items: center;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.m-r-xxs {
+  margin-right: var(--space-xxs);
+}
+
+.m-l-xxs {
+  margin-left: var(--space-xxs);
+}
+
+.m-r-xs {
+  margin-right: var(--space-xs);
+}
+
+.m-l-xs {
+  margin-left: var(--space-xs);
+}

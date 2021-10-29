@@ -1,8 +1,10 @@
-import './globals.css'
+import '../styles/globals.css'
+import '../styles/utils.css'
+
 import type { AppProps } from 'next/app'
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyTune({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />
 }
 
-export default MyApp
+export default MyTune

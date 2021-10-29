@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import debug from 'debug'
 
 import { toQueryString } from '../../utils/querystring'
-import { Song, SongLike, create as createSong } from '../../models/song'
+import { Song, iTuneSong, cleaniTuneSong } from '../../utils/song'
 
 const log = debug('app:searchApi')
 const logerr = debug('app:searchApi:error')
@@ -11,13 +11,11 @@ export interface ErrorData {
   error: string
 }
 
-export type ClientData = Song[] | ErrorData
-
-interface iTuneResultItem extends SongLike {}
+export type ClientData = iTuneSong[] | ErrorData
 
 interface iTuneSearchData {
   resultCount: number
-  results: iTuneResultItem[]
+  results: iTuneSong[]
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ClientData>) {
@@ -25,14 +23,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (term) {
     const qs = toQueryString({
       term,
-      media: 'music', // we're only interested in music
-      
+
+      // we're only interested in songs
+      media: 'music',
+      entity: 'song',
+
       // TODO: add more fixed params if needed
+      // country
+      // limit
+      // lang
     })
 
-    log(`Query params: ${qs}`)
-
     try {
+      log(`Fetching 'https://itunes.apple.com/search?${qs}'`)
       const response: Response = await fetch(`https://itunes.apple.com/search?${qs}`)
       const data: iTuneSearchData = await response.json()
 
@@ -40,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
       res
         .status(200)
-        .json(data.results.map(createSong))
+        .json(data.results.map(cleaniTuneSong))
     } catch (err) {
       logerr(err)
 

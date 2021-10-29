@@ -6,17 +6,27 @@ import styles from './Breadcrumb.module.css'
 import store from '../../models/Store'
 
 export default function Breadcrumb(): JSX.Element {
-  const searchCls = useMemo(() => store.isSongSelected() ? 'pointer' : '', [])
   const clickSearch = useCallback(() => store.unselectSong(), [])
+
+  let searchCrumb = (
+    <>
+      <SearchOutlined className="m-r-xxs" />
+      <span>Search</span>
+    </>
+  )
+
+  if (store.isSongSelected()) {
+    searchCrumb = (
+      <a onClick={clickSearch}>
+        {searchCrumb}
+      </a>
+    )
+  }
 
   return (
     <AntBreadcrumb className={styles.container}>
-      <AntBreadcrumb.Item
-        className={searchCls}
-        onClick={clickSearch}
-      >
-        <SearchOutlined />
-        <span>Search</span>
+      <AntBreadcrumb.Item>
+        {searchCrumb}
       </AntBreadcrumb.Item>
       
       {store.isSongSelected() && (

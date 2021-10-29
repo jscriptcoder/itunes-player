@@ -1,7 +1,7 @@
 import EventEmitter from 'events'
 import debug from 'debug'
 
-import { Song } from './song'
+import { Song, transformiTuneSong } from '../utils/song'
 import { ClientData } from '../pages/api/search'
 
 const log = debug('app:Store')
@@ -18,7 +18,7 @@ export class Store extends EventEmitter {
   selectedSong: Maybe<Song>
   selectedIndex: number = -1
 
-  async searchByTerm(term: string): Promise<any> {
+  async searchByTerm(term: string): Promise<void> {
     try {
       log(`Searching by the term '${term}'...`)
       
@@ -31,8 +31,7 @@ export class Store extends EventEmitter {
         logerr(`Error ${response.status}:`, data.error)
         throw Error(data.error)
       } else {
-        log('Data received:', data)
-        this.setSongs(data)
+        this.setSongs(data.map(transformiTuneSong))
       }
     } catch(err) {
       logerr('There was an error on searching:', err)
@@ -42,7 +41,7 @@ export class Store extends EventEmitter {
   setSongs(songs: Song[]): void {
     log('Setting songs:', songs)
     this.songs = songs
-    this.emit('songschanged')
+    this.emit('songschanged', songs)
   }
 
   selectSong(index: number): void {
