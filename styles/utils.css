@@ -22,3 +22,7 @@
 .m-l-xs {
   margin-left: var(--space-xs);
 }
+
+.full-width {
+  width: 100%;
+}

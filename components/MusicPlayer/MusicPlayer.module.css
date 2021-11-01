@@ -1,0 +1,48 @@
+.container {
+  width: 360px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,1);
+  border-radius: 4px;
+  margin-top: 40px;
+  padding: var(--space-md);
+  background-color: #1d1d1d;
+}
+
+.container > * {
+  margin-bottom: var(--space-md);
+}
+
+.container > *:last-child {
+  margin-bottom: 0;
+}
+
+.albumCover {
+  width: 164px;
+  height: 164px;
+  border-radius: 4px;
+  margin-top: -40px;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,1);
+}
+
+.details {
+  width: 100%;
+}
+
+.artistName {
+  font-size: 20px;
+}
+
+.collectionName {
+  font-size: 16px;
+  font-style: italic;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.share {}

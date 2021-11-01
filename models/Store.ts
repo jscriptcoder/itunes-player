@@ -45,7 +45,12 @@ export class Store extends EventEmitter {
   }
 
   selectSong(index: number): void {
-    if(index !== this.selectedIndex && this.songs[index]) {
+    if(
+      index >= 0 && 
+      index < this.songs.length && 
+      index !== this.selectedIndex && 
+      this.songs[index]
+    ) {
       this.selectedSong = this.songs[index]
       this.selectedIndex = index
 
@@ -67,6 +72,14 @@ export class Store extends EventEmitter {
 
   isSongSelected(): boolean {
     return Boolean(this.selectedSong)
+  }
+
+  selectNextSong(): void {
+    this.selectSong(this.selectedIndex + 1)
+  }
+
+  selectPreviousSong(): void {
+    this.selectSong(this.selectedIndex - 1)
   }
 }
 
