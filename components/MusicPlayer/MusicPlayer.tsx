@@ -1,6 +1,5 @@
-import { Button, Slider, Alert } from 'antd'
-import PropTypes from 'prop-types'
-import { FunctionComponent, memo } from 'react'
+import { Button, Slider, Divider, Alert } from 'antd'
+import { FunctionComponent, memo, useMemo } from 'react'
 import {
   PlayCircleOutlined,
   PauseCircleOutlined,
@@ -10,6 +9,7 @@ import {
 
 import styles from './MusicPlayer.module.css'
 import useMusicPlayer, { MusicPlayerProps } from './useMusicPlayer'
+import { secondsFormat } from '../../utils/formatters'
 
 const MusicPlayer: FunctionComponent<MusicPlayerProps> = (props: MusicPlayerProps): JSX.Element => {
   const {
@@ -17,6 +17,8 @@ const MusicPlayer: FunctionComponent<MusicPlayerProps> = (props: MusicPlayerProp
     isFirst,
     isLast,
     playing,
+    progressMarks,
+    progressTipFormatter,
     clickPrevious,
     clickPlay,
     clickPause,
@@ -72,7 +74,15 @@ const MusicPlayer: FunctionComponent<MusicPlayerProps> = (props: MusicPlayerProp
 
         <h3>{song.trackName}</h3>
 
-        <Slider className="full-width" min={0} max={song.trackLength} />
+        <Slider
+          style={{ width: '90%' }}
+          min={0}
+          max={song.trackLength}
+          marks={progressMarks}
+          tipFormatter={progressTipFormatter}
+        />
+
+        <Divider />
 
         <div className={styles.details}>
           <div className={styles.artistName}>{song.artistName}</div>

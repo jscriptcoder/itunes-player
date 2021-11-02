@@ -1,6 +1,7 @@
-import { MouseEventHandler, useCallback, useEffect, useMemo, useState } from 'react'
+import { MouseEventHandler, ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 
 import Player from '../../models/Player'
+import { secondsFormat } from '../../utils/formatters'
 import { Song } from '../../utils/song'
 
 export interface MusicPlayerProps {
@@ -13,6 +14,8 @@ interface MusicPlayerUI {
   isFirst: boolean
   isLast: boolean
   playing: boolean
+  progressMarks: ObjectMap
+  progressTipFormatter: (seconds?: number) => ReactNode
   clickPrevious: MouseEventHandler<HTMLElement>
   clickPlay: MouseEventHandler<HTMLElement>,
   clickPause: MouseEventHandler<HTMLElement>,
@@ -53,6 +56,25 @@ export default function useMusicPlayer(props: MusicPlayerProps): MusicPlayerUI {
   const isFirst: boolean = useMemo(() => internalIndex === 0, [internalIndex])
   const isLast: boolean = useMemo(() => internalIndex === songs.length-1, [internalIndex, songs])
 
+  const progressMarks = useMemo(() => {
+    if (player?.song) {
+      const { song } = player
+      return {
+        0: '00:00',
+        [song.trackLength]: secondsFormat(song.trackLength),
+      }
+    }
+
+    return {}
+  }, [player?.song])
+
+  const progressTipFormatter = useCallback((seconds?: number): ReactNode => {
+    if (typeof seconds === 'number') {
+      return secondsFormat(seconds)
+    }
+    return null
+  }, [])
+
   const clickPrevious: MouseEventHandler<HTMLElement> = useCallback(() => {
     player?.destroy()
     setInternalIndex(internalIndex - 1)
@@ -64,7 +86,6 @@ export default function useMusicPlayer(props: MusicPlayerProps): MusicPlayerUI {
   }, [internalIndex])
 
   const clickPlay = useCallback(() => player?.play(), [player])
-
   const clickPause = useCallback(() => player?.pause(), [player])
 
   return {
@@ -72,6 +93,8 @@ export default function useMusicPlayer(props: MusicPlayerProps): MusicPlayerUI {
     isFirst,
     isLast,
     playing,
+    progressMarks,
+    progressTipFormatter,
     clickPrevious,
     clickPlay,
     clickPause,
