@@ -1,5 +1,6 @@
-import { Button, Slider } from 'antd'
+import { Button, Slider, Alert } from 'antd'
 import PropTypes from 'prop-types'
+import { FunctionComponent, memo } from 'react'
 import {
   PlayCircleOutlined,
   PauseCircleOutlined,
@@ -10,81 +11,89 @@ import {
 import styles from './MusicPlayer.module.css'
 import useMusicPlayer, { MusicPlayerProps } from './useMusicPlayer'
 
-export default function MusicPlayer(props: MusicPlayerProps): JSX.Element {
+const MusicPlayer: FunctionComponent<MusicPlayerProps> = (props: MusicPlayerProps): JSX.Element => {
   const {
-    song,
+    player,
     isFirst,
     isLast,
-    onPrevious,
-    onNext,
+    playing,
+    clickPrevious,
+    clickPlay,
+    clickPause,
+    clickNext,
   } = useMusicPlayer(props)
 
-  return (
-    <div className={styles.container}>
-      <img
-        className={styles.albumCover}
-        src={song.coverUrl100}
-      />
-      <div className={styles.controls}>
+  if (player) {
+    const { song } = player
+
+    const playPauseButton = playing
+      ? (
         <Button
+          type="primary"
           shape="circle"
-          icon={<DoubleLeftOutlined />}
-          onClick={onPrevious}
-          disabled={isFirst}
+          size="large"
+          icon={<PauseCircleOutlined />}
+          onClick={clickPause}
         />
+      )
+      : (
         <Button
           type="primary"
           shape="circle"
           size="large"
           icon={<PlayCircleOutlined />}
+          onClick={clickPlay}
         />
-        <Button
-          shape="circle"
-          icon={<DoubleRightOutlined />}
-          onClick={onNext}
-          disabled={isLast}
+      )
+
+    return (
+      <div className={styles.container}>
+        <img
+          className={styles.albumCover}
+          src={song.coverUrl100}
         />
-      </div>
+        <div className={styles.controls}>
+          <Button
+            shape="circle"
+            icon={<DoubleLeftOutlined />}
+            onClick={clickPrevious}
+            disabled={isFirst}
+          />
 
-      <h3>{song.trackName}</h3>
+          {playPauseButton}
 
-      <Slider className="full-width" min={0} max={song.trackLength} />
+          <Button
+            shape="circle"
+            icon={<DoubleRightOutlined />}
+            onClick={clickNext}
+            disabled={isLast}
+          />
+        </div>
 
-      <div className={styles.details}>
-        <div className={styles.artistName}>{song.artistName}</div>
-        <div className={styles.collectionName}>{song.collectionName}</div>
+        <h3>{song.trackName}</h3>
+
+        <Slider className="full-width" min={0} max={song.trackLength} />
+
+        <div className={styles.details}>
+          <div className={styles.artistName}>{song.artistName}</div>
+          <div className={styles.collectionName}>{song.collectionName}</div>
+        </div>
+        <div className={styles.share}>
+          {/* TODO */}
+        </div>
       </div>
-      <div className={styles.share}>
-        {/* TODO */}
-      </div>
-    </div>
+    )
+  }
+
+  return (
+    <Alert
+      message="Warning"
+      description="No song selected"
+      type="warning"
+      showIcon
+    />
   )
+
 }
 
-const songShape = PropTypes.shape({
-  id: PropTypes.number,
-  artistName: PropTypes.string,
-  collectionName: PropTypes.string,
-  trackName: PropTypes.string,
-  collectionArtistName: PropTypes.string,
-  previewUrl: PropTypes.string,
-  coverUrl30: PropTypes.string,
-  coverUrl100: PropTypes.string,
-  collectionPrice: PropTypes.number,
-  trackPrice: PropTypes.number,
-  country: PropTypes.number,
-  currency: PropTypes.number,
-  releaseDate: PropTypes.object,
-  genreName: PropTypes.number,
-  trackLength: PropTypes.number,
-})
-
-MusicPlayer.propTypes = {
-  selectedIndex: PropTypes.number,
-  songs: PropTypes.arrayOf(songShape),
-}
-
-MusicPlayer.propTypes = {
-  selectedIndex: -1,
-  songs: [],
-}
+export default memo(MusicPlayer)
