@@ -14,7 +14,24 @@ export default class Player extends EventEmitter {
     this.song = song
     this.audio = new Audio(song.previewUrl)
 
+    this.audio.addEventListener('loadedmetadata', this._loadmetadata)
+    this.audio.addEventListener('timeupdate', this._timeupdate)
+    this.audio.addEventListener('ended', this._ended)
+
     log('Player created with song:', song)
+  }
+
+  private _loadmetadata = () => {
+    log(`Duration of '${this.song.trackName}': ${this.audio.duration}s`)
+    this.emit('loadmetadata', this.audio.duration)
+  }
+
+  private _timeupdate = () => {
+    this.emit('timeupdate', this.audio.currentTime, this.audio.duration)
+  }
+
+  private _ended = () => {
+    this.emit('ended')
   }
 
   play(): void {
@@ -36,7 +53,10 @@ export default class Player extends EventEmitter {
     log(`Stoping '${this.song.trackName}'`)
 
     this.audio.pause()
+    
     this.audio.currentTime = 0
+    this._timeupdate()
+
     this.emit('stoped')
   }
 

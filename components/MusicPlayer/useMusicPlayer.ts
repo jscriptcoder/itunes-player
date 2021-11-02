@@ -7,6 +7,7 @@ import { Song } from '../../utils/song'
 export interface MusicPlayerProps {
   selectedIndex: number
   songs: Song[]
+  changeSong: (index: number) => void
 }
 
 interface MusicPlayerUI {
@@ -14,8 +15,11 @@ interface MusicPlayerUI {
   isFirst: boolean
   isLast: boolean
   playing: boolean
+  duration: number
+  progress: number
   progressMarks: ObjectMap
   progressTipFormatter: (seconds?: number) => ReactNode
+  changeProgress: (seconds: number) => void
   clickPrevious: MouseEventHandler<HTMLElement>
   clickPlay: MouseEventHandler<HTMLElement>,
   clickPause: MouseEventHandler<HTMLElement>,
@@ -23,10 +27,12 @@ interface MusicPlayerUI {
 }
 
 export default function useMusicPlayer(props: MusicPlayerProps): MusicPlayerUI {
-  const {selectedIndex, songs} = props
+  const {selectedIndex, songs, changeSong} = props
   const [internalIndex, setInternalIndex] = useState(selectedIndex)
   const [player, setPlayer ] = useState<Player>()
   const [playing, setPlaying] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [duration, setDuration] = useState(0)
 
   useEffect(() => {
     if (songs.length) {
@@ -38,10 +44,16 @@ export default function useMusicPlayer(props: MusicPlayerProps): MusicPlayerUI {
         const onPlaying = () => setPlaying(true)
         const onPaused = () => setPlaying(false)
         const onStoped = () => setPlaying(false)
+        const onLoadMetadata = (_duration: number) => setDuration(_duration)
+        const onTimeupdate = (currentTime: number) => setProgress(currentTime)
+        const onEnded = () => player?.stop()
 
         _player.on('playing', onPlaying)
         _player.on('paused', onPaused)
         _player.on('stoped', onStoped)
+        _player.on('loadmetadata', onLoadMetadata)
+        _player.on('timeupdate', onTimeupdate)
+        _player.on('ended', onEnded)
 
         setPlayer(_player)
 
@@ -57,16 +69,16 @@ export default function useMusicPlayer(props: MusicPlayerProps): MusicPlayerUI {
   const isLast: boolean = useMemo(() => internalIndex === songs.length-1, [internalIndex, songs])
 
   const progressMarks = useMemo(() => {
-    if (player?.song) {
-      const { song } = player
+    if (duration) {
+      const rounded = Math.round(duration)
       return {
         0: '00:00',
-        [song.trackLength]: secondsFormat(song.trackLength),
+        [rounded]: secondsFormat(rounded),
       }
     }
 
     return {}
-  }, [player?.song])
+  }, [duration])
 
   const progressTipFormatter = useCallback((seconds?: number): ReactNode => {
     if (typeof seconds === 'number') {
@@ -75,14 +87,26 @@ export default function useMusicPlayer(props: MusicPlayerProps): MusicPlayerUI {
     return null
   }, [])
 
+  const changeProgress = useCallback((seconds: number) => {
+    if (player?.audio) {
+      player.audio.currentTime = seconds
+    }
+  }, [player])
+
   const clickPrevious: MouseEventHandler<HTMLElement> = useCallback(() => {
     player?.destroy()
-    setInternalIndex(internalIndex - 1)
+
+    const newIndex = internalIndex - 1
+    setInternalIndex(newIndex)
+    changeSong(newIndex)
   }, [internalIndex])
 
   const clickNext: MouseEventHandler<HTMLElement> = useCallback(() => {
     player?.destroy()
-    setInternalIndex(internalIndex + 1)
+
+    const newIndex = internalIndex + 1
+    setInternalIndex(newIndex)
+    changeSong(newIndex)
   }, [internalIndex])
 
   const clickPlay = useCallback(() => player?.play(), [player])
@@ -93,8 +117,11 @@ export default function useMusicPlayer(props: MusicPlayerProps): MusicPlayerUI {
     isFirst,
     isLast,
     playing,
+    duration,
+    progress,
     progressMarks,
     progressTipFormatter,
+    changeProgress,
     clickPrevious,
     clickPlay,
     clickPause,

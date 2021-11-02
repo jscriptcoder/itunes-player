@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { ReactNode, useEffect, useMemo, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 
 import styles from './index.module.css'
 import Page from '../components/Page'
@@ -30,6 +30,8 @@ const Index: NextPage = () => {
     }
   }, [])
 
+  const changeSong = useCallback((index: number): void => store.selectSong(index), [])
+
   let content: ReactNode = (
     <div className={styles.searchWrapper}>
       <SearchBar />
@@ -42,6 +44,7 @@ const Index: NextPage = () => {
       <MusicPlayer
         selectedIndex={selectedIndex}
         songs={songs}
+        changeSong={changeSong}
       />
     )
   }

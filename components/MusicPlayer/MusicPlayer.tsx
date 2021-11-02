@@ -9,7 +9,6 @@ import {
 
 import styles from './MusicPlayer.module.css'
 import useMusicPlayer, { MusicPlayerProps } from './useMusicPlayer'
-import { secondsFormat } from '../../utils/formatters'
 
 const MusicPlayer: FunctionComponent<MusicPlayerProps> = (props: MusicPlayerProps): JSX.Element => {
   const {
@@ -17,8 +16,11 @@ const MusicPlayer: FunctionComponent<MusicPlayerProps> = (props: MusicPlayerProp
     isFirst,
     isLast,
     playing,
+    duration,
+    progress,
     progressMarks,
     progressTipFormatter,
+    changeProgress,
     clickPrevious,
     clickPlay,
     clickPause,
@@ -77,9 +79,11 @@ const MusicPlayer: FunctionComponent<MusicPlayerProps> = (props: MusicPlayerProp
         <Slider
           style={{ width: '90%' }}
           min={0}
-          max={song.trackLength}
+          max={duration}
           marks={progressMarks}
           tipFormatter={progressTipFormatter}
+          value={progress}
+          onChange={changeProgress}
         />
 
         <Divider />
