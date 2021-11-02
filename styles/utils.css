@@ -26,3 +26,9 @@
 .full-width {
   width: 100%;
 }
+
+.disable {
+  pointer-events: none;
+  opacity: 0.2;
+  /* filter: blur(2px); */
+}

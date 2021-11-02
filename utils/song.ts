@@ -1,6 +1,7 @@
 import moment, { Moment } from 'moment'
 
-export interface Song {
+export interface Song extends ObjectMap {
+  idx: number
   id: number
 	artistName: string
 	collectionName: string
@@ -16,6 +17,7 @@ export interface Song {
 	releaseDate: Moment
   genreName: string
   trackLength: number
+  
 }
 
 export interface iTuneSong {
@@ -88,8 +90,9 @@ export const transformiTuneSong = ({
   releaseDate,
   primaryGenreName,
   trackTimeMillis,
-}: iTuneSong): Song => {
+}: iTuneSong, idx: number): Song => {
   return {
+    idx,
     id: trackId,
     artistName,
     collectionName,

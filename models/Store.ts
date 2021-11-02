@@ -7,6 +7,13 @@ import { ClientData } from '../pages/api/search'
 const log = debug('app:Store')
 const logerr = debug('app:Store:error')
 
+export type TypeSort = 'asc' | 'desc'
+
+export interface Sorting {
+  field: string
+  type: TypeSort
+}
+
 export class Store extends EventEmitter {
   static __instance__: Store
 
@@ -17,6 +24,10 @@ export class Store extends EventEmitter {
   songs: Song[] = []
   selectedSong: Maybe<Song>
   selectedIndex: number = -1
+  currentSorting: Sorting = {
+    field: 'idx',
+    type: 'asc',
+  }
 
   async searchByTerm(term: string): Promise<void> {
     try {
@@ -39,7 +50,10 @@ export class Store extends EventEmitter {
   }
 
   setSongs(songs: Song[]): void {
+    this.unselectSong()
+
     log('Setting songs:', songs)
+    
     this.songs = songs
     this.emit('songschanged', songs)
   }
@@ -80,6 +94,27 @@ export class Store extends EventEmitter {
 
   selectPreviousSong(): void {
     this.selectSong(this.selectedIndex - 1)
+  }
+
+  sort(field: string, type: TypeSort = 'asc'): void {
+    if (
+      field !== this.currentSorting.field || 
+      type !== this.currentSorting.type
+    ) {
+      log(`Sorting songs by ${field}/${type}...`)
+
+      this.currentSorting = { field, type }
+  
+      const clone = this.songs.slice()
+      clone.sort((a: Song, b: Song) => (a[field] > b[field] ? 1 : -1) * (type === 'asc' ? 1 : -1))
+      this.setSongs(clone)
+  
+      log('Songs sorted:', clone)
+    }
+  }
+
+  unsort(): void {
+    this.sort('idx', 'asc')
   }
 }
 

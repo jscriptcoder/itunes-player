@@ -1,0 +1,10 @@
+.sorting {
+  position: relative;
+  margin-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+}
+
+.sorting > button[role="switch"] {
+  margin-right: var(--space-md);
+}
