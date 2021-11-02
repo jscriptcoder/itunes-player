@@ -1,5 +1,5 @@
-import { Button, Slider, Divider, Alert } from 'antd'
-import { FunctionComponent, memo, useMemo } from 'react'
+import { Button, Slider, Divider, Alert, Descriptions } from 'antd'
+import { FunctionComponent, memo } from 'react'
 import {
   PlayCircleOutlined,
   PauseCircleOutlined,
@@ -9,6 +9,7 @@ import {
 
 import styles from './MusicPlayer.module.css'
 import useMusicPlayer, { MusicPlayerProps } from './useMusicPlayer'
+import { priceFormat } from '../../utils/formatters'
 
 const MusicPlayer: FunctionComponent<MusicPlayerProps> = (props: MusicPlayerProps): JSX.Element => {
   const {
@@ -88,10 +89,17 @@ const MusicPlayer: FunctionComponent<MusicPlayerProps> = (props: MusicPlayerProp
 
         <Divider />
 
-        <div className={styles.details}>
-          <div className={styles.artistName}>{song.artistName}</div>
-          <div className={styles.collectionName}>{song.collectionName}</div>
-        </div>
+        <Descriptions size="small" layout="horizontal" column={1} bordered>
+          <Descriptions.Item label="Artist">{song.artistName}</Descriptions.Item>
+          <Descriptions.Item label="Album">{song.collectionName}</Descriptions.Item>
+          <Descriptions.Item label="Release">{song.releaseDate.format('MMMM Do, YYYY')}</Descriptions.Item>
+          <Descriptions.Item label="Length">{song.trackLength} sec.</Descriptions.Item>
+          <Descriptions.Item label="Genre">{song.genreName}</Descriptions.Item>
+          <Descriptions.Item label="Price">{song.currency} {priceFormat(song.trackPrice)}</Descriptions.Item>
+        </Descriptions>
+
+        <Divider />
+
         <div className={styles.share}>
           {/* TODO */}
         </div>
