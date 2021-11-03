@@ -26,3 +26,7 @@ body,
 #__next { height: 100%; }
 
 * { box-sizing: border-box; }
+
+.ant-notification {
+  z-index: 10000 !important;
+}

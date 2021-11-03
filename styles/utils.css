@@ -32,3 +32,7 @@
   opacity: 0.2;
   /* filter: blur(2px); */
 }
+
+.c-yellow {
+  color: var(--yellow-font);
+}

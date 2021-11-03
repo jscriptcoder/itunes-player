@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  webapp:
+    image: itunes-player
+    build: .
+    ports:
+      - 80:3000

@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  webapp:
+    image: itunes-player-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./components:/usr/app/components
+      - ./models:/usr/app/models
+      - ./pages:/usr/app/pages
+      - ./styles:/usr/app/styles
+      - ./utils:/usr/app/utils
+    ports:
+      - 3000:3000
