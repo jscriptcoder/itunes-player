@@ -17,10 +17,15 @@ $ npm install
 $ npm run dev
 ```
 
-Enjoy the music :-)
-
-## Running unit-tests
+## Running development env in a Docker container
 ```shell
-$ npm test
+$ docker compose -f docker-compose.dev.yml up
+```
+App ready on http://localhost:3000
+
+## Running production env in a Docker container
+```shell
+$ docker compose up
 ```
 
+App ready on http://localhost
