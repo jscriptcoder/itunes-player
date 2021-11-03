@@ -25,7 +25,7 @@ const notify = (
   socialMedia: string,
   trackName: string,
   icon: ReactNode
-) => notification.open({
+): void => notification.open({
   message: `Shared on ${socialMedia}`,
   description: (
     <span>
@@ -36,46 +36,46 @@ const notify = (
 })
 
 export default function TrackName(props: TrackNameProps): JSX.Element {
-  const {name, url} = props
+  const { name, url } = props
 
   return (
     <h3 className={styles.trackName}>
-    <span className="c-yellow">{name}</span>
-    <br />
-    <Tooltip title="Click to open in music.apple.com">
-      <Button
-        icon={<AppleOutlined />}
-        type="link"
-        href={url}
-        target="_blank"
-      />
-    </Tooltip>
-    <Tooltip title="Share this song in your favourite Social Network">
-      <Dropdown overlay={(
-        <Menu>
-          <Menu.Item
-            icon={<FacebookOutlined />}
-            onClick={() => notify('Facebook', name, <FacebookOutlined />)}
-          >
-            Facebook
-          </Menu.Item>
-          <Menu.Item
-            icon={<TwitterOutlined />}
-            onClick={() => notify('Twitter', name, <TwitterOutlined />)}
-          >
-            Twitter
-          </Menu.Item>
-          <Menu.Item
-            icon={<WeiboOutlined />}
-            onClick={() => notify('Weibo', name, <WeiboOutlined />)}
-          >
-            Weibo
-          </Menu.Item>
-        </Menu>
-      )}>
-        <Button icon={<ShareAltOutlined />} type="link" />
-      </Dropdown>
-    </Tooltip>
-  </h3>
+      <span className="c-yellow">{name}</span>
+      <br />
+      <Tooltip title="Click to open in music.apple.com">
+        <Button
+          icon={<AppleOutlined />}
+          type="link"
+          href={url}
+          target="_blank"
+        />
+      </Tooltip>
+      <Tooltip title="Share this song in your favourite Social Network">
+        <Dropdown overlay={(
+          <Menu>
+            <Menu.Item
+              icon={<FacebookOutlined />}
+              onClick={() => notify('Facebook', name, <FacebookOutlined />)}
+            >
+              Facebook
+            </Menu.Item>
+            <Menu.Item
+              icon={<TwitterOutlined />}
+              onClick={() => notify('Twitter', name, <TwitterOutlined />)}
+            >
+              Twitter
+            </Menu.Item>
+            <Menu.Item
+              icon={<WeiboOutlined />}
+              onClick={() => notify('Weibo', name, <WeiboOutlined />)}
+            >
+              Weibo
+            </Menu.Item>
+          </Menu>
+        )}>
+          <Button icon={<ShareAltOutlined />} type="link" />
+        </Dropdown>
+      </Tooltip>
+    </h3>
   )
 }

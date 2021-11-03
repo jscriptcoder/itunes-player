@@ -38,6 +38,7 @@ const MusicPlayer: FunctionComponent<MusicPlayerProps> = (props: MusicPlayerProp
           src={song.coverUrl100}
         />
 
+        {/* TODO: prop drilling!! */}
         <ControlsPlayer
           isFirst={isFirst}
           isLast={isLast}
@@ -62,16 +63,7 @@ const MusicPlayer: FunctionComponent<MusicPlayerProps> = (props: MusicPlayerProp
 
         <Divider />
 
-        <TrackDetails
-          artist={song.artistName}
-          collection={song.collectionName}
-          collectionUrl={song.collectionViewUrl}
-          release={song.releaseDate}
-          genre={song.genreName}
-          length={song.trackLength}
-          currency={song.currency}
-          price={song.trackPrice}
-        />
+        <TrackDetails song={song} />
       </div>
     )
   }
