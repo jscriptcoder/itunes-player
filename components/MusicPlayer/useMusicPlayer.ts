@@ -3,6 +3,7 @@ import { MouseEventHandler, ReactNode, useCallback, useEffect, useMemo, useState
 import Player from '../../models/Player'
 import { secondsFormat } from '../../utils/formatters'
 import { Song } from '../../utils/song'
+import { ControlsPlayerProps } from './ControlsPlayer'
 
 export interface MusicPlayerProps {
   selectedIndex: number
@@ -10,20 +11,13 @@ export interface MusicPlayerProps {
   changeSong: (index: number) => void
 }
 
-interface MusicPlayerUI {
+interface MusicPlayerUI extends ControlsPlayerProps {
   player?: Player
-  isFirst: boolean
-  isLast: boolean
-  playing: boolean
   duration: number
   progress: number
   progressMarks: ObjectMap
   progressTipFormatter: (seconds?: number) => ReactNode
   changeProgress: (seconds: number) => void
-  clickPrevious: MouseEventHandler<HTMLElement>
-  clickPlay: MouseEventHandler<HTMLElement>,
-  clickPause: MouseEventHandler<HTMLElement>,
-  clickNext: MouseEventHandler<HTMLElement>
 }
 
 export default function useMusicPlayer(props: MusicPlayerProps): MusicPlayerUI {

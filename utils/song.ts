@@ -17,7 +17,8 @@ export interface Song extends ObjectMap {
 	releaseDate: Moment
   genreName: string
   trackLength: number
-  
+  viewUrl: string
+  collectionViewUrl: string
 }
 
 export interface iTuneSong {
@@ -36,6 +37,8 @@ export interface iTuneSong {
 	releaseDate: string
   primaryGenreName: string
   trackTimeMillis: number
+  trackViewUrl: string
+  collectionViewUrl: string
 }
 
 export const cleaniTuneSong = ({
@@ -54,6 +57,8 @@ export const cleaniTuneSong = ({
   releaseDate,
   primaryGenreName,
   trackTimeMillis,
+  trackViewUrl,
+  collectionViewUrl,
 }: iTuneSong): iTuneSong => {
   return {
     trackId,
@@ -71,6 +76,8 @@ export const cleaniTuneSong = ({
     releaseDate,
     primaryGenreName,
     trackTimeMillis,
+    trackViewUrl,
+    collectionViewUrl,
   }
 }
 
@@ -90,6 +97,8 @@ export const transformiTuneSong = ({
   releaseDate,
   primaryGenreName,
   trackTimeMillis,
+  trackViewUrl,
+  collectionViewUrl,
 }: iTuneSong, idx: number): Song => {
   return {
     idx,
@@ -107,6 +116,8 @@ export const transformiTuneSong = ({
     currency,
     releaseDate: moment(releaseDate),
     genreName: primaryGenreName,
-    trackLength: Math.round(trackTimeMillis / 1000)
+    trackLength: Math.round(trackTimeMillis / 1000),
+    viewUrl: trackViewUrl,
+    collectionViewUrl,
   }
 }

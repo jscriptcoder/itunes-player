@@ -26,6 +26,10 @@
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,1);
 }
 
+.trackName {
+  text-align: center;
+}
+
 .details {
   width: 100%;
 }
@@ -44,5 +48,3 @@
   justify-content: space-between;
   width: 100%;
 }
-
-.share {}

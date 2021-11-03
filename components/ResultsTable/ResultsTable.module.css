@@ -1,3 +1,5 @@
+.container {}
+
 .sorting {
   position: relative;
   margin-bottom: var(--space-md);
