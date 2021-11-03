@@ -23,7 +23,7 @@ $ docker compose -f docker-compose.dev.yml up
 ```
 App ready on http://localhost:3000
 
-## Running production env in a Docker container
+## Running production env
 ```shell
 $ docker compose up
 ```
