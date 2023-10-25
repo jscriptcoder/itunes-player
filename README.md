@@ -1,4 +1,4 @@
-# itunes-player
+# itunes-player - Home Assignment Test
 
 Simple music player using iTunes API
 
